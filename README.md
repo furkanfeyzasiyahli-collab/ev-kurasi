@@ -2,6 +2,9 @@
 
 Bu repo, front-end odaklı bir "Ev Kurası" demo projesidir. Gerçek başvuru veya çekiliş yapmaz; demo amaçlıdır.
 
+Çekiliş Tarihi: 12 Mart 2027 14:00
+Başvuru Bitiş Tarihi: 01 Ocak 2027 23:59:59
+
 Özellikler
 - Responsive HTML/CSS/Vanilla JS
 - Başvuru formu (localStorage'da saklanır)

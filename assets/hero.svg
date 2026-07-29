@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a66ff"/>
+      <stop offset="100%" stop-color="#05204a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#g)"/>
+  <g fill="#ffffff" font-family="Poppins, Arial, sans-serif">
+    <text x="50" y="180" font-size="48" font-weight="600">Ev Kurası Demo</text>
+    <text x="50" y="220" font-size="20" opacity="0.9">Hemen başvurun — demo sayfası</text>
+  </g>
+</svg>

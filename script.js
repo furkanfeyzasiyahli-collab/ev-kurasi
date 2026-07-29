@@ -1,6 +1,9 @@
 // script.js (ES module)
 const STORAGE_KEY = 'ev_kurasi_submissions_v1';
-const COUNTDOWN_TARGET = new Date(new Date().getFullYear() + 1, 0, 1, 14, 0, 0); // örnek: 1 Ocak gelecek yıl 14:00
+// Çekiliş hedef tarihi: 12 Mart 2027 14:00
+const COUNTDOWN_TARGET = new Date(2027, 2, 12, 14, 0, 0);
+// Başvuruların son tarihi: 01 Ocak 2027 23:59:59
+const APPLICATION_DEADLINE = new Date(2027, 0, 1, 23, 59, 59);
 
 // Util functions
 function qs(sel, root = document) { return root.querySelector(sel); }
@@ -36,6 +39,19 @@ function formatTime(ts) {
   return d.toLocaleTimeString('tr-TR');
 }
 
+// Init info fields
+(function initInfo() {
+  const infoDateEl = qs('#info-date');
+  const infoTimeEl = qs('#info-time');
+  const deadlineEl = qs('#info-deadline');
+  if (infoDateEl) infoDateEl.textContent = '12 Mart 2027';
+  if (infoTimeEl) infoTimeEl.textContent = '14:00';
+  if (deadlineEl) deadlineEl.textContent = '01 Ocak 2027';
+  // update apply status based on deadline
+  const statusEl = qs('#apply-status');
+  if (statusEl) statusEl.textContent = (Date.now() > APPLICATION_DEADLINE.getTime()) ? 'Kapalı' : 'Açık';
+})();
+
 // Countdown
 function updateCountdown() {
   const now = new Date();
@@ -60,6 +76,13 @@ updateCountdown();
 const applyForm = qs('#applyForm');
 applyForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  // check deadline
+  if (Date.now() > APPLICATION_DEADLINE.getTime()) {
+    showToast('Başvurular kapandı.');
+    qs('#apply-status').textContent = 'Kapalı';
+    return;
+  }
+
   const form = new FormData(applyForm);
   // basic validation
   if (!form.get('kvkk') || !form.get('terms')) {
