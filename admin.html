@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yönetici - Ev Kurası (Demo)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container" style="padding-top:2rem;">
+    <h1>Yönetici Paneli (Demo)</h1>
+    <div id="loginBox">
+      <p>Demo şifre: <strong>demo1234</strong></p>
+      <input id="adminPass" placeholder="Şifre" type="password">
+      <button id="adminLogin" class="btn">Giriş</button>
+    </div>
+
+    <div id="adminPanel" style="display:none">
+      <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:1rem">
+        <button id="startDraw" class="btn primary">Çekilişi Başlat (Rastgele 1 Kazanan)</button>
+        <button id="exportCsv" class="btn">CSV Dışa Aktar</button>
+        <button id="clearAll" class="btn secondary">Tümünü Sil (Demo)</button>
+      </div>
+      <div id="participants"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loadSubmissions, saveSubmissions, formatDate, formatTime, showToast } from './script.js';
+
+    const loginBtn = document.getElementById('adminLogin');
+    const passInput = document.getElementById('adminPass');
+    const panel = document.getElementById('adminPanel');
+    const loginBox = document.getElementById('loginBox');
+    const participantsDiv = document.getElementById('participants');
+
+    function renderList() {
+      const list = loadSubmissions().slice().reverse();
+      if (!list.length) { participantsDiv.innerHTML = '<p>Başvuru yok.</p>'; return; }
+      const rows = list.map(s => {
+        return `<div class="card" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div><strong>${s.participationNumber}</strong> — ${s.name} ${s.surname}</div>
+            <small>${formatDate(s.timestamp)} ${formatTime(s.timestamp)} • Durum: ${s.status}</small>
+          </div>
+          <div style="display:flex;gap:.5rem">
+            <button data-id="${s.id}" class="btn edit">Düzenle</button>
+            <button data-id="${s.id}" class="btn secondary delete">Sil</button>
+          </div>
+        </div>`;
+      }).join('');
+      participantsDiv.innerHTML = rows;
+      // attach listeners
+      Array.from(participantsDiv.querySelectorAll('.delete')).forEach(b => b.addEventListener('click', (ev) => {
+        const id = ev.target.dataset.id;
+        if (!confirm('Kaydı silmek istediğinize emin misiniz?')) return;
+        const list = loadSubmissions().filter(x => x.id !== id);
+        saveSubmissions(list);
+        renderList();
+        showToast('Kayıt silindi.');
+      }));
+      Array.from(participantsDiv.querySelectorAll('.edit')).forEach(b => b.addEventListener('click', (ev) => {
+        const id = ev.target.dataset.id;
+        const list = loadSubmissions();
+        const item = list.find(x => x.id === id);
+        const newStatus = prompt('Durum girin (Onaylandı / Beklemede / İptal Edildi):', item.status);
+        if (newStatus) {
+          item.status = newStatus;
+          saveSubmissions(list);
+          renderList();
+        }
+      }));
+    }
+
+    loginBtn.addEventListener('click', () => {
+      const pass = passInput.value;
+      if (pass === 'demo1234') {
+        loginBox.style.display = 'none';
+        panel.style.display = 'block';
+        renderList();
+      } else alert('Yanlış şifre (demo: demo1234)');
+    });
+
+    document.getElementById('exportCsv').addEventListener('click', () => {
+      const list = loadSubmissions();
+      if (!list.length) { alert('Kayıt yok'); return; }
+      const headers = ['Katılım No','Ad','Soyad','TC','Telefon','E-posta','Tarih','Durum'];
+      const rows = list.map(s => [
+        s.participationNumber, s.name, s.surname, s.tc, s.phone, s.email,
+        new Date(s.timestamp).toLocaleString('tr-TR'), s.status
+      ]);
+      const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ev_kurasi_katilimcilar.csv'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('startDraw').addEventListener('click', () => {
+      const list = loadSubmissions();
+      if (!list.length) { alert('Başvuru yok'); return; }
+      const idx = Math.floor(Math.random() * list.length);
+      const winner = list[idx];
+      // mark winner
+      winner.status = 'Kazandı';
+      saveSubmissions(list);
+      renderList();
+      alert(`Kazanan: ${winner.participationNumber} — ${winner.name} ${winner.surname}`);
+    });
+
+    document.getElementById('clearAll').addEventListener('click', () => {
+      if (!confirm('Tüm kayıtları silmek istiyor musunuz?')) return;
+      saveSubmissions([]);
+      renderList();
+    });
+  </script>
+</body>
+</html>

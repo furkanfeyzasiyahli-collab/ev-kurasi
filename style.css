@@ -1,0 +1,76 @@
+:root{
+  --navy:#05204a;
+  --blue:#0a66ff;
+  --muted:#f2f4f8;
+  --text:#0f1724;
+  --card:#ffffff;
+  --accent:#007bff;
+  --success:#2e7d32;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; color:var(--text); background:linear-gradient(180deg,#fff,#f7fbff);}
+.container{max-width:1100px;margin:0 auto;padding:1rem;}
+.site-header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:30}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;}
+.logo{display:flex;align-items:center;gap:.5rem}
+.logo img{height:36px}
+.brand{font-weight:600}
+.nav{display:flex;gap:0.75rem;align-items:center}
+.nav a{color:#dfefff;text-decoration:none;padding:.35rem .6rem;border-radius:6px}
+.nav a:hover{background:rgba(255,255,255,0.06)}
+.menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.1rem}
+.theme-toggle{background:none;border:0;color:#fff;font-size:1.1rem;margin-left:.5rem}
+
+.hero{display:flex;gap:1.5rem;align-items:center;padding:2rem 1rem}
+.hero-content{flex:1}
+.hero h1{font-size:1.8rem;margin:.2rem 0 0.5rem}
+.hero p{opacity:.8;margin:0 0 1rem}
+.hero-cta{display:flex;align-items:center;gap:1rem}
+.btn{display:inline-block;padding:.6rem 1rem;border-radius:8px;border:0;cursor:pointer;font-weight:600;text-decoration:none}
+.btn.primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(10,102,255,0.18);transition:transform .12s}
+.btn.primary:hover{transform:translateY(-3px)}
+.btn.secondary{background:transparent;border:1px solid #ddd}
+
+.hero-image img{width:320px;border-radius:12px;box-shadow:0 12px 30px rgba(2,6,23,.08)}
+
+.info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-top:1rem}
+.card{background:var(--card);padding:1rem;border-radius:10px;display:flex;gap:.8rem;align-items:center;box-shadow:0 6px 18px rgba(2,6,23,.04)}
+.card h4{margin:0;font-size:0.95rem}
+
+.apply-section, .query-section, .contact{background:#fff;padding:1rem;border-radius:12px;margin:1rem 0;box-shadow:0 6px 18px rgba(2,6,23,.04)}
+.apply-form .row{display:flex;gap:1rem}
+.field{flex:1;display:flex;flex-direction:column;margin-bottom:.6rem}
+.field label{font-size:.85rem;margin-bottom:.25rem}
+.field input,.field textarea{padding:.5rem;border-radius:8px;border:1px solid #e6eef8}
+.form-actions{display:flex;justify-content:flex-end;margin-top:.5rem}
+
+.query-box{display:flex;gap:.5rem}
+.query-box input{flex:1;padding:.6rem;border-radius:8px;border:1px solid #dde7f7}
+.query-result{margin-top:.75rem;padding:.6rem;border-radius:8px;background:#fbfdff;border:1px solid #eef6ff}
+
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.45);display:none;align-items:center;justify-content:center;padding:1rem}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{background:#fff;border-radius:12px;padding:1rem;max-width:420px;width:100%;position:relative;animation:slideUp .3s ease}
+.modal-close{position:absolute;top:.5rem;right:.6rem;border:0;background:none;font-size:1.1rem;cursor:pointer}
+
+.toast{position:fixed;right:1rem;bottom:1rem;background:var(--navy);color:#fff;padding:.6rem 1rem;border-radius:8px;display:none}
+.toast.show{display:block;animation:fadeIn .3s}
+
+.countdown{display:flex;gap:.5rem;margin-left:.5rem}
+.countdown div{background:var(--card);padding:.4rem .6rem;border-radius:8px;text-align:center;min-width:56px;box-shadow:0 6px 15px rgba(2,6,23,.04)}
+.countdown span{font-weight:700;font-size:1rem;display:block}
+
+@keyframes slideUp{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media (max-width:800px){
+  .hero{flex-direction:column;text-align:center}
+  .hero-image img{width:100%}
+  .nav{display:none}
+  .menu-toggle{display:block}
+  .header-inner{gap:.5rem}
+  .apply-form .row{flex-direction:column}
+}
+.dark{background:#071226;color:#d7e9ff}
+.dark .site-header{background:#021025}
+.dark .card,.dark .apply-section,.dark .query-section{background:#062033;color:#cfe9ff}

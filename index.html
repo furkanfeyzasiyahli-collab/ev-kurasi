@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ev Kurası - Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Ev Kurası Logo" onerror="this.style.display='none'">
+        <span class="brand">Ev Kurası</span>
+      </div>
+      <nav class="nav">
+        <a href="#hero">Ana Sayfa</a>
+        <a href="#info">Çekiliş Bilgileri</a>
+        <a href="#apply">Başvuru</a>
+        <a href="#query">Sorgulama</a>
+        <a href="#contact">İletişim</a>
+        <a href="admin.html" class="admin-link">Yönetici</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Karanlık mod">🌓</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menü">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero container">
+      <div class="hero-content">
+        <h1>Ev Sahibi Olma Fırsatını Kaçırmayın</h1>
+        <p>Birkaç dakika içerisinde başvurunuzu tamamlayin.</p>
+        <div class="hero-cta">
+          <a class="btn primary" id="applyNow">Hemen Başvur</a>
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div><span id="cd-days">00</span><small>Gün</small></div>
+            <div><span id="cd-hours">00</span><small>Saat</small></div>
+            <div><span id="cd-mins">00</span><small>Dakika</small></div>
+            <div><span id="cd-secs">00</span><small>Saniye</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/hero.jpg" alt="Ev görseli" onerror="this.style.display='none'">
+      </div>
+    </section>
+
+    <section id="info" class="container info-cards">
+      <div class="card">🏠 <div><h4>Ödül</h4><p>2+1 Konut</p></div></div>
+      <div class="card">📅 <div><h4>Çekiliş Tarihi</h4><p id="info-date">01 Ocak 2027</p></div></div>
+      <div class="card">🕗 <div><h4>Saat</h4><p id="info-time">14:00</p></div></div>
+      <div class="card">📺 <div><h4>Canlı Yayın</h4><p><a href="#" id="liveLink">Demo Yayın</a></p></div></div>
+      <div class="card">👥 <div><h4>Katılımcı Sayısı</h4><p id="total-participants">0</p></div></div>
+      <div class="card">🎫 <div><h4>Başvuru Durumu</h4><p id="apply-status">Açık</p></div></div>
+    </section>
+
+    <section id="apply" class="container apply-section">
+      <h2>Başvuru Formu</h2>
+      <form id="applyForm" class="apply-form" novalidate>
+        <div class="row">
+          <div class="field"><label>Ad</label><input name="name" required></div>
+          <div class="field"><label>Soyad</label><input name="surname" required></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>TC Kimlik No</label><input name="tc" maxlength="11" required></div>
+          <div class="field"><label>Telefon</label><input name="phone" required></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>E-posta</label><input name="email" type="email" required></div>
+          <div class="field"><label>Doğum Tarihi</label><input name="dob" type="date" required></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>İl</label><input name="city" required></div>
+          <div class="field"><label>İlçe</label><input name="district" required></div>
+        </div>
+        <div class="field"><label>Adres</label><textarea name="address" rows="2" required></textarea></div>
+
+        <div class="row small">
+          <label><input type="checkbox" name="kvkk" required> KVKK Onaylıyorum</label>
+          <label><input type="checkbox" name="terms" required> Şartları kabul ediyorum</label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Başvur</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="query" class="container query-section">
+      <h2>Katılım Sorgulama</h2>
+      <div class="query-box">
+        <input id="queryInput" placeholder="Katılım Numarası (ör: EK-2026-845921)">
+        <button id="queryBtn" class="btn">Sorgula</button>
+      </div>
+      <div id="queryResult" class="query-result" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="contact" class="container contact">
+      <h2>İletişim</h2>
+      <p>Demo proje — gerçek başvuru alınmamaktadır. Sorular için: demo@evkurasi.example</p>
+    </section>
+  </main>
+
+  <!-- Başvuru Sonrası Modal -->
+  <div id="confirmationModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" id="closeConfirm" aria-label="Kapat">✕</button>
+      <h3>Başvuru Onaylandı</h3>
+      <p id="conf-name">Ad Soyad</p>
+      <p><strong>Tarih:</strong> <span id="conf-date"></span> <strong>Saat:</strong> <span id="conf-time"></span></p>
+      <p><strong>Katılım Numarası:</strong> <span id="conf-code"></span></p>
+      <img id="conf-qr" alt="QR Kod">
+      <p><strong>Başvuru Durumu:</strong> <span id="conf-status">Beklemede</span></p>
+      <div class="modal-actions">
+        <button id="printBtn" class="btn">Yazdır</button>
+        <button id="pdfBtn" class="btn">PDF İndir</button>
+        <button id="closeBtn" class="btn secondary">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
